@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace omoore2_mission6.Models
 {
     public class AddResponse
-    {
+    { //Connects the form to the actual database specifics
         [Key]
         [Required]
         public int MovieID { get; set; }

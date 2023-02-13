@@ -1,6 +1,5 @@
 using omoore2_mission6.Models;
 using Microsoft.EntityFrameworkCore;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;

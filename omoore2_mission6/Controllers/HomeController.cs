@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-
+//Tells the computer which page to serve up based on which actions they take
 namespace omoore2_mission6.Controllers
 {
     public class HomeController : Controller
