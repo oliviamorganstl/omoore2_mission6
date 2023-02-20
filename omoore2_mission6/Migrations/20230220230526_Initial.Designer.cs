@@ -8,7 +8,7 @@ using omoore2_mission6.Models;
 namespace omoore2_mission6.Migrations
 {
     [DbContext(typeof(AddMovieContext))]
-    [Migration("20230213185838_Initial")]
+    [Migration("20230220230526_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,9 +23,8 @@ namespace omoore2_mission6.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -54,13 +53,15 @@ namespace omoore2_mission6.Migrations
 
                     b.HasKey("MovieID");
 
+                    b.HasIndex("CategoryID");
+
                     b.ToTable("Responses");
 
                     b.HasData(
                         new
                         {
                             MovieID = 1,
-                            Category = "Action/Adventure",
+                            CategoryID = 1,
                             Director = "Joss Whedon",
                             Edited = false,
                             Lent = "",
@@ -72,7 +73,7 @@ namespace omoore2_mission6.Migrations
                         new
                         {
                             MovieID = 2,
-                            Category = "Action/Adventure",
+                            CategoryID = 2,
                             Director = "Guy Ritchie",
                             Edited = true,
                             Lent = "",
@@ -84,7 +85,7 @@ namespace omoore2_mission6.Migrations
                         new
                         {
                             MovieID = 3,
-                            Category = "Action/Adventure",
+                            CategoryID = 3,
                             Director = "Phil Alden Robinson",
                             Edited = false,
                             Lent = "",
@@ -93,6 +94,71 @@ namespace omoore2_mission6.Migrations
                             Title = "Sneakers",
                             Year = 1992
                         });
+                });
+
+            modelBuilder.Entity("omoore2_mission6.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            CategoryName = "Action/Adventure"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            CategoryName = "Drama"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            CategoryName = "Family"
+                        },
+                        new
+                        {
+                            CategoryID = 5,
+                            CategoryName = "Horror/Suspense"
+                        },
+                        new
+                        {
+                            CategoryID = 6,
+                            CategoryName = "Miscellaneous"
+                        },
+                        new
+                        {
+                            CategoryID = 7,
+                            CategoryName = "Television"
+                        },
+                        new
+                        {
+                            CategoryID = 8,
+                            CategoryName = "VHS"
+                        });
+                });
+
+            modelBuilder.Entity("omoore2_mission6.Models.AddResponse", b =>
+                {
+                    b.HasOne("omoore2_mission6.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using omoore2_mission6.Models;
 using System;
@@ -34,26 +35,66 @@ namespace omoore2_mission6.Controllers
         [HttpGet]
         public IActionResult Movies()
         {
+            ViewBag.Categories = movieContext.Categories.ToList();
+
             return View();
         }
         [HttpPost]
 
         public IActionResult Movies(AddResponse ar)
         {
-            movieContext.Add(ar);
+            if (ModelState.IsValid)
+            {
+                movieContext.Add(ar);
+                movieContext.SaveChanges();
+
+                return View("Confirmation", ar);
+            }
+            else //if invalid
+            {
+                ViewBag.Categories = movieContext.Categories.ToList();
+                return View(ar);
+            }
+
+
+        }
+        public IActionResult Collection ()
+        {
+            var movies = movieContext.Responses
+            .Include(x => x.Category)
+            .ToList();
+            return View(movies);
+        }
+        [HttpGet]
+        public IActionResult Edit(int movieid)
+        {
+            ViewBag.Categories = movieContext.Categories.ToList(); //This pulls in the dropdown list from the categories table
+
+            var movies = movieContext.Responses.Single(x => x.MovieID == movieid);
+            return View("Movies", movies);
+        }
+        [HttpPost]
+        public IActionResult Edit(AddResponse ar)
+        {
+            movieContext.Update(ar);
             movieContext.SaveChanges();
 
-            return View("Confirmation", ar);
-        }
-        public IActionResult Privacy()
-        {
-            return View();
+            return RedirectToAction("Collection"); //Once they finish updating
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpGet]
+        public IActionResult Delete(int movieid) //Hit the cancel button
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var movies = movieContext.Responses.Single(x => x.MovieID == movieid);
+            return View(movies);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(AddResponse ar) //Submit the delete button
+        {
+            movieContext.Responses.Remove(ar);
+            movieContext.SaveChanges();
+            return RedirectToAction("Collection");
         }
     }
 }

@@ -16,13 +16,25 @@ namespace omoore2_mission6.Models
 
         public DbSet<AddResponse> Responses { get; set; }
 
+        public DbSet<Category> Categories { get; set; }
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            mb.Entity<Category>().HasData(
+                new Category { CategoryID = 1, CategoryName = "Action/Adventure" },
+                new Category { CategoryID = 2, CategoryName = "Comedy" },
+                new Category { CategoryID = 3, CategoryName = "Drama" },
+                new Category { CategoryID = 4, CategoryName = "Family" },
+                new Category { CategoryID = 5, CategoryName = "Horror/Suspense" },
+                new Category { CategoryID = 6, CategoryName = "Miscellaneous" },
+                new Category { CategoryID = 7, CategoryName = "Television" },
+                new Category { CategoryID = 8, CategoryName = "VHS" }
+                 );
+
             mb.Entity<AddResponse>().HasData(
                 new AddResponse
                 {
                     MovieID = 1,
-                    Category = "Action/Adventure",
+                    CategoryID = 1,
                     Title = "Serenity",
                     Year = 2005,
                     Director = "Joss Whedon",
@@ -34,7 +46,7 @@ namespace omoore2_mission6.Models
                 new AddResponse
                 {
                     MovieID = 2,
-                    Category = "Action/Adventure",
+                    CategoryID = 2,
                     Title = "Snatch",
                     Year =2001,
                     Director = "Guy Ritchie",
@@ -46,7 +58,7 @@ namespace omoore2_mission6.Models
                 new AddResponse
                 {
                     MovieID = 3,
-                    Category = "Action/Adventure",
+                    CategoryID = 3,
                     Title = "Sneakers",
                     Year = 1992,
                     Director = "Phil Alden Robinson",
